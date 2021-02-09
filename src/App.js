@@ -1,3 +1,4 @@
+
 import Header from './components/Header';
 import Footer from './components/Footer';
 import About from './components/About'
@@ -9,6 +10,7 @@ import {BrowserRouter as Router, Route} from 'react-router-dom'
 
 
 function App() {
+  const jsonServer = 'https://devalexbaker-json-server.herokuapp.com/tasks'
 const [showAddTask, setShowAddTask] = useState(false);
   const [tasks, setTasks] = useState([])
 
@@ -24,7 +26,7 @@ const [showAddTask, setShowAddTask] = useState(false);
 
 // fetch tasks
   const fetchTasks = async () => {
-    const res = await fetch('http://localhost:5000/tasks')
+    const res = await fetch(jsonServer)
     const data = await res.json();
     //console.log(data)
     return data
@@ -32,7 +34,7 @@ const [showAddTask, setShowAddTask] = useState(false);
 
 // fetch single task
 const fetchTask = async (id) => {
-  const res = await fetch(`http://localhost:5000/tasks/${id}`)
+  const res = await fetch(`${jsonServer}/${id}`)
   const data = await res.json();
   return data
 }
@@ -42,7 +44,7 @@ const fetchTask = async (id) => {
 // delete tasks
 const deleteTask = async (id) => {
 //console.log('delete ', id)
-await fetch(`http://localhost:5000/tasks/${id}`, {
+await fetch(`${jsonServer}/${id}`, {
   method: 'DELETE'
 })
 
@@ -54,7 +56,7 @@ const toggleReminder = async (id) => {
 
 const taskToToggle = await fetchTask(id)
 const updTask = {...taskToToggle, reminder: !taskToToggle.reminder}
-const res = await fetch(`http://localhost:5000/tasks/${id}`, {
+const res = await fetch(`${jsonServer}/${id}`, {
   method: 'PUT',
   headers: {
     'content-type': 'application/json'
@@ -73,7 +75,7 @@ const data = await res.json()
 //add task
 const addTask = async (task) => {
 
-const res = await fetch('http://localhost:5000/tasks', {
+const res = await fetch(jsonServer, {
   method: 'POST',
   headers: {
     'content-type': 'application/json'
